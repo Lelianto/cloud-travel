@@ -1,13 +1,33 @@
 <template>
-  <div>
-    <h1>{{ msg }}</h1>
+  <div class="bg-light-grey">
+    <HeaderOrg />
+    <div class="flex px-[115px] pt-[60px]">
+      <div class="w-[290px]">
+        <SideMenusOrg />
+      </div>
+      <div class="w-full pl-4">
+        <SearchResultOrg />
+      </div>
+    </div>
+    <FooterOrg />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import HeaderOrg from "@/components/organisms/HeaderOrg.vue";
+import SideMenusOrg from "@/components/organisms/SideMenusOrg.vue";
+import SearchResultOrg from "@/components/organisms/SearchResultOrg.vue";
+import FooterOrg from "@/components/organisms/FooterOrg.vue";
 
-@Component
+@Component({
+  components: {
+    HeaderOrg,
+    SideMenusOrg,
+    SearchResultOrg,
+    FooterOrg,
+  },
+})
 export default class SearchTemplate extends Vue {
   @Prop() private msg!: string;
 }

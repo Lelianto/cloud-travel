@@ -1,34 +1,33 @@
 <template>
   <div>
+    <!-- Reviews section -->
     <Reviews
-      :title="title"
-      :clear-list="clearList"
-      :check-list="checkList"
-      :options="options"
-      :restart-check-list="restartCheckList"
+      :title="reviews.title"
+      :clear-list="reviews.clearList"
+      :check-list="reviews.checkList"
+      :options="reviews.options"
+      :restart-check-list="restartReviewCheckList"
+      :show="reviews.show"
+      :update-check-list="updateReviewCheckList"
     >
-      <div class="flex flex-col text-xs justify-around mr-[2px]">
-        <div
-          v-for="(option, index) in options"
-          :key="`${option.label}-number-${index}`"
-        >
-          999
-        </div>
-      </div>
+      <ViewersAmount :options="reviews.options" :show="reviews.show" />
     </Reviews>
     <div class="py-1" />
+    <!-- Star Rating -->
     <Reviews
-      :title="title"
-      :clear-list="clearList"
-      :check-list="checkList"
-      :options="starsOptions"
-      :restart-check-list="restartCheckList"
-      :hide-label="hideLabel"
+      :title="starRating.title"
+      :clear-list="starRating.clearList"
+      :check-list="starRating.checkList"
+      :options="starRating.options"
+      :restart-check-list="restartStarCheckList"
+      :hide-label="starRating.hideLabel"
+      :show="starRating.show"
+      :update-check-list="updateStarRatingCheckList"
     >
       <div class="absolute left-5 h-full">
         <div class="flex flex-col text-xs justify-around mr-[2px] h-full">
           <div
-            v-for="(option, index) in starsOptions"
+            v-for="(option, index) in starRating.options"
             :key="`${option.label}-star-${index}`"
           >
             <div v-if="option.label * 1 !== 0" class="flex justify-start">
@@ -46,85 +45,104 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-col text-xs justify-around mr-[2px]">
-        <div
-          v-for="(option, index) in options"
-          :key="`${option.label}-number-${index}`"
-        >
-          999
-        </div>
-      </div>
+      <ViewersAmount :options="starRating.options" :show="starRating.show" />
+    </Reviews>
+    <div class="py-1" />
+    <!-- Reservation Policy -->
+    <Reviews
+      :title="reservations.title"
+      :clear-list="reservations.clearList"
+      :check-list="reservations.checkList"
+      :options="reservations.options"
+      :restart-check-list="restartReservationCheckList"
+      :update-show="updateReservationShow"
+      :update-check-list="updateReservationCheckList"
+    >
+      <ViewersAmount :options="reservations.options" />
+    </Reviews>
+    <div class="py-1" />
+    <!-- Meal Plan -->
+    <Reviews
+      :title="mealPlan.title"
+      :clear-list="mealPlan.clearList"
+      :check-list="mealPlan.checkList"
+      :options="mealPlan.options"
+      :restart-check-list="restartMealPlanCheckList"
+      :update-show="updateMealPlanShow"
+      :update-check-list="updateMealPlanCheckList"
+    >
+      <ViewersAmount :options="mealPlan.options" />
+    </Reviews>
+    <div class="py-1" />
+    <!-- Property type -->
+    <Reviews
+      :title="propertyType.title"
+      :clear-list="propertyType.clearList"
+      :check-list="propertyType.checkList"
+      :options="propertyType.options"
+      :restart-check-list="restartPropertyTypeCheckList"
+      :update-show="updatePropertyTypeShow"
+      :update-check-list="updatePropertyTypeCheckList"
+    >
+      <ViewersAmount :options="propertyType.options" />
+    </Reviews>
+    <div class="py-1" />
+    <!-- Facilities -->
+    <Reviews
+      :title="facilities.title"
+      :clear-list="facilities.clearList"
+      :check-list="facilities.checkList"
+      :options="facilities.options"
+      :restart-check-list="restartFacilitiesCheckList"
+      :update-show="updateFacilitiesShow"
+      :update-check-list="updateFacilitiesCheckList"
+    >
+      <ViewersAmount :options="facilities.options" />
     </Reviews>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import Reviews from "@/components/molecules/Reviews.vue";
+import ViewersAmount from "@/components/atoms/ViewersAmount.vue";
+import { ReviewsProps } from "@/utils/interface";
 
 @Component({
   components: {
     Reviews,
+    ViewersAmount,
   },
 })
 export default class SideMenusOrg extends Vue {
-  public title!: string;
-  public clearList!: string;
-  public hideLabel!: boolean;
-  public checkList: Array<string>;
-  public starsOptions: Array<{ label: string; disabled?: boolean }>;
-  public options: Array<{ label: string; disabled?: boolean }>;
+  @Prop() public reviews!: ReviewsProps;
+  @Prop() public restartReviewCheckList!: () => void;
 
-  constructor() {
-    super();
-    this.title = "Price per night";
-    this.clearList = "CLEAR";
-    this.hideLabel = true;
-    this.checkList = [];
-    this.starsOptions = [
-      {
-        label: "5",
-      },
-      {
-        label: "4",
-      },
-      {
-        label: "3",
-      },
-      {
-        label: "2",
-      },
-      {
-        label: "1",
-      },
-      {
-        label: "0",
-      },
-    ];
-    this.options = [
-      {
-        label: "Excellent",
-      },
-      {
-        label: "Very Good",
-      },
-      {
-        label: "Good",
-      },
-      {
-        label: "Fair",
-      },
-      {
-        label: "Poor",
-      },
-      {
-        label: "No review",
-      },
-    ];
-  }
+  @Prop() public starRating!: ReviewsProps;
+  @Prop() public restartStarCheckList!: () => void;
 
-  public restartCheckList() {
-    this.checkList = [];
-  }
+  @Prop() public reservations!: ReviewsProps;
+  @Prop() public restartReservationCheckList!: () => void;
+
+  @Prop() public mealPlan!: ReviewsProps;
+  @Prop() public restartMealPlanCheckList!: () => void;
+
+  @Prop() public propertyType!: ReviewsProps;
+  @Prop() public restartPropertyTypeCheckList!: () => void;
+
+  @Prop() public facilities!: ReviewsProps;
+  @Prop() public restartFacilitiesCheckList!: () => void;
+
+  @Prop() public updateReviewCheckList!: (e: Array<string>) => void;
+  @Prop() public updateReservationCheckList!: (e: Array<string>) => void;
+  @Prop() public updateReservationShow!: (e: Array<string>) => void;
+  @Prop() public updateStarRatingCheckList!: (e: Array<string>) => void;
+  @Prop() public updateMealPlanCheckList!: (e: Array<string>) => void;
+  @Prop() public updatePropertyTypeCheckList!: (e: Array<string>) => void;
+  @Prop() public updateFacilitiesCheckList!: (e: Array<string>) => void;
+
+  @Prop() public updateMealPlanShow!: (e: Array<string>) => void;
+  @Prop() public updatePropertyTypeShow!: (e: Array<string>) => void;
+  @Prop() public updateFacilitiesShow!: (e: Array<string>) => void;
 }
 </script>

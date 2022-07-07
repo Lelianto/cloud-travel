@@ -1,27 +1,41 @@
 <template>
-  <div class="flex justify-between relative">
-    <el-checkbox-group v-model="checkListModel" class="flex flex-col">
-      <el-checkbox
-        v-for="(option, index) in options"
-        :key="`${option.label}-${index}`"
-        :label="option.label"
-        :disabled="option.disabled"
-        :checked="checkList.includes(option.label)"
-        :class="`text-left custom-color ${hideLabel ? 'hide-label' : ''}`"
-      ></el-checkbox>
-    </el-checkbox-group>
-    <slot></slot>
+  <div>
+    <div class="flex justify-between relative">
+      <el-checkbox-group v-model="checkListModel" class="flex flex-col">
+        <el-checkbox
+          v-for="(option, index) in options"
+          :key="`${option.label}-${index}`"
+          :label="option.label"
+          :disabled="option.disabled"
+          :checked="checkList.includes(option.label)"
+          :class="`text-left custom-color ${hideLabel ? 'hide-label' : ''} ${
+            show && index >= show ? 'hide-temporary' : ''
+          }`"
+        ></el-checkbox>
+      </el-checkbox-group>
+      <slot></slot>
+    </div>
+    <div
+      v-if="show && show !== options.length"
+      class="text-left text-xs mt-1 text-blue-1 cursor-pointer"
+      @click="updateShow(props.options.length)"
+    >
+      Show 5 more <span class="text-[8px]">&#x25BC;</span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({})
 export default class CheckBox extends Vue {
   @Prop() public checkList!: Array<string>;
   @Prop() public options!: Array<{ label: string; disabled?: boolean }>;
   @Prop() public hideLabel!: boolean;
+  @Prop({ required: false }) public show!: number;
+  @Prop() public updateCheckList!: (e: Array<string>) => void;
+  @Prop({ required: false }) public updateShow!: (e: Array<string>) => void;
 
   public checkListModel: Array<string>;
 
@@ -35,9 +49,9 @@ export default class CheckBox extends Vue {
     this.checkListModel = newVal;
   }
 
-  @Emit("checkList")
-  checked() {
-    return this.checkListModel;
+  @Watch("checkListModel")
+  emitToCheckList(newVal: Array<string>) {
+    this.$props.updateCheckList(newVal);
   }
 }
 </script>
@@ -63,5 +77,8 @@ export default class CheckBox extends Vue {
   .el-checkbox__label {
     display: none;
   }
+}
+.hide-temporary {
+  display: none;
 }
 </style>

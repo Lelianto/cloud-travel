@@ -70,8 +70,9 @@
       :restart-check-list="restartMealPlanCheckList"
       :update-show="updateMealPlanShow"
       :update-check-list="updateMealPlanCheckList"
+      :show="mealPlan.show"
     >
-      <ViewersAmount :options="mealPlan.options" />
+      <ViewersAmount :options="mealPlan.options" :show="mealPlan.show" />
     </Reviews>
     <div class="py-1" />
     <!-- Property type -->
@@ -83,8 +84,12 @@
       :restart-check-list="restartPropertyTypeCheckList"
       :update-show="updatePropertyTypeShow"
       :update-check-list="updatePropertyTypeCheckList"
+      :show="propertyType.show"
     >
-      <ViewersAmount :options="propertyType.options" />
+      <ViewersAmount
+        :options="propertyType.options"
+        :show="propertyType.show"
+      />
     </Reviews>
     <div class="py-1" />
     <!-- Facilities -->
@@ -96,8 +101,9 @@
       :restart-check-list="restartFacilitiesCheckList"
       :update-show="updateFacilitiesShow"
       :update-check-list="updateFacilitiesCheckList"
+      :show="facilities.show"
     >
-      <ViewersAmount :options="facilities.options" />
+      <ViewersAmount :options="facilities.options" :show="facilities.show" />
     </Reviews>
   </div>
 </template>

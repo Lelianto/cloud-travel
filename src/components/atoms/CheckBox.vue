@@ -18,9 +18,10 @@
     <div
       v-if="show && show !== options.length"
       class="text-left text-xs mt-1 text-blue-1 cursor-pointer"
-      @click="updateShow(props.options.length)"
+      @click="updateShow(options.length)"
     >
-      Show 5 more <span class="text-[8px]">&#x25BC;</span>
+      Show {{ options.length - show }} more
+      <span class="text-[8px]">&#x25BC;</span>
     </div>
   </div>
 </template>

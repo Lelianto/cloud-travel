@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixed top-0 right-0 left-0 w-full bg-white">
+    <div class="fixed top-0 right-0 left-0 w-full bg-white z-40">
       <div class="flex justify-between px-[147px] py-[13px]">
         <img
           src="https://storage.googleapis.com/dev.zumata.com/static/hiring/job01/cloudtravel-logo.jpg"
@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div class="fixed top-0 right-0 left-0 w-full bg-blue-1 mt-[61px]">
+    <div class="fixed top-0 right-0 left-0 w-full bg-blue-1 mt-[61px] z-40">
       <div class="grid grid-cols-2 gap-2 px-[145px]">
         <div class="relative w-full">
           <el-input

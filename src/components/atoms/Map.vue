@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full relative">
+  <div class="w-full h-full relative cursor-pointer">
     <img
       src="https://storage.googleapis.com/dev.zumata.com/static/hiring/job01/map-bg.jpeg"
       alt=""

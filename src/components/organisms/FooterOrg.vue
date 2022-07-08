@@ -12,7 +12,7 @@
           Showing Results 1 – 20 of 9999
         </div>
         <el-pagination
-          :page-size="20"
+          :page-size="1"
           :pager-count="11"
           layout="prev, pager, next"
           :total="9999"

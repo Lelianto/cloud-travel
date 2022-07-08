@@ -30,7 +30,7 @@
         </div>
         <div
           v-if="showOption"
-          class="absolute w-full text-black-three py-3 text-sm bg-white border-y-white rounded-[3px] shadow-custom mt-1 border-l-white hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer"
+          class="absolute z-10 w-full text-black-three py-3 text-sm bg-white border-y-white rounded-[3px] shadow-custom mt-1 border-l-white hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer"
           @click="chooseSorting(sortByPrice.notChoosen)"
         >
           {{ sortByPrice.notChoosen }}

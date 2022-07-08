@@ -3,6 +3,15 @@ module.exports = {
   mode: "jit",
   content: ["./public/**/*.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
+    screen: {
+      xs: "320px",
+      sm: "576px",
+      md: "768px",
+      lg: "992px",
+      xl: "1200px",
+      "2xl": "1448px",
+      "3xl": "1600px",
+    },
     extend: {
       colors: {
         "blue-1": "#002D63",

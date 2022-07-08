@@ -5,7 +5,7 @@
         title
       }}</span>
       <span
-        v-if="checkList.length !== 0"
+        v-if="checkList && checkList.length !== 0"
         @click="deleteFunction"
         class="text-xs font-[700] text-blue-1 cursor-pointer"
         >{{ deleteText }}</span
@@ -20,9 +20,9 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class MenuBox extends Vue {
-  @Prop() public title!: string;
-  @Prop() public deleteText!: string;
-  @Prop() public deleteFunction!: () => void;
-  @Prop() public checkList!: Array<string>;
+  @Prop({ required: false }) public title!: string;
+  @Prop({ required: false }) public deleteText!: string;
+  @Prop({ required: false }) public deleteFunction!: () => void;
+  @Prop({ required: false }) public checkList!: Array<string>;
 }
 </script>

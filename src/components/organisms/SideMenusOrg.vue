@@ -1,5 +1,18 @@
 <template>
-  <div>
+  <div class="w-[290px]">
+    <!-- Map section -->
+    <MapView />
+    <div class="py-1" />
+    <!-- Slider section -->
+    <Reviews
+      :title="'Price per night'"
+      :clear-list="'CLEAR'"
+      :restart-check-list="restartReviewCheckList"
+      :check-list="[2500, 7500]"
+    >
+      <SliderBox />
+    </Reviews>
+    <div class="py-1" />
     <!-- Reviews section -->
     <Reviews
       :title="reviews.title"
@@ -46,6 +59,11 @@
         </div>
       </div>
       <ViewersAmount :options="starRating.options" :show="starRating.show" />
+    </Reviews>
+    <div class="py-1" />
+    <!-- Hotel section -->
+    <Reviews :title="'Hotel Name'">
+      <SearchHotel />
     </Reviews>
     <div class="py-1" />
     <!-- Reservation Policy -->
@@ -112,12 +130,18 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import Reviews from "@/components/molecules/Reviews.vue";
 import ViewersAmount from "@/components/atoms/ViewersAmount.vue";
+import MapView from "@/components/atoms/Map.vue";
+import SliderBox from "@/components/atoms/Slider.vue";
+import SearchHotel from "@/components/atoms/SearchHotel.vue";
 import { ReviewsProps } from "@/utils/interface";
 
 @Component({
   components: {
     Reviews,
     ViewersAmount,
+    MapView,
+    SliderBox,
+    SearchHotel,
   },
 })
 export default class SideMenusOrg extends Vue {

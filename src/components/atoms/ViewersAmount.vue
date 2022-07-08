@@ -3,7 +3,7 @@
     <div
       v-for="(option, index) in props.options"
       :key="`${option.label}-number-${index}`"
-      :class="`${props.show && index >= props.show ? 'hide-temporary' : ''}`"
+      :class="`${props.show && index >= props.show ? 'hidden' : ''}`"
     >
       999
     </div>
@@ -22,9 +22,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.hide-temporary {
-  display: none;
-}
-</style>

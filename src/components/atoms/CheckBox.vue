@@ -23,6 +23,14 @@
       Show {{ options.length - show }} more
       <span class="text-[8px]">&#x25BC;</span>
     </div>
+    <div
+      v-if="show && show === options.length"
+      class="text-left text-xs mt-1 text-blue-1 cursor-pointer"
+      @click="updateShow(initialShow)"
+    >
+      Show less
+      <span class="text-[8px]">&#x25B4;</span>
+    </div>
   </div>
 </template>
 
@@ -31,18 +39,29 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({})
 export default class CheckBox extends Vue {
-  @Prop() public checkList!: Array<string>;
-  @Prop() public options!: Array<{ label: string; disabled?: boolean }>;
-  @Prop() public hideLabel!: boolean;
+  @Prop({ required: false }) public checkList!: Array<string>;
+  @Prop({ required: false }) public options!: Array<{
+    label: string;
+    disabled?: boolean;
+  }>;
+  @Prop({ required: false }) public hideLabel!: boolean;
   @Prop({ required: false }) public show!: number;
-  @Prop() public updateCheckList!: (e: Array<string>) => void;
+  @Prop({ required: false }) public updateCheckList!: (
+    e: Array<string>
+  ) => void;
   @Prop({ required: false }) public updateShow!: (e: Array<string>) => void;
 
   public checkListModel: Array<string>;
+  public initialShow: number;
 
   constructor() {
     super();
     this.checkListModel = [];
+    this.initialShow = 0;
+  }
+
+  mounted() {
+    this.initialShow = this.$props.show || 0;
   }
 
   @Watch("checkList")
@@ -52,7 +71,13 @@ export default class CheckBox extends Vue {
 
   @Watch("checkListModel")
   emitToCheckList(newVal: Array<string>) {
-    this.$props.updateCheckList(newVal);
+    if (newVal) {
+      try {
+        this.$props.updateCheckList(newVal);
+      } catch (err) {
+        console.log({ err });
+      }
+    }
   }
 }
 </script>

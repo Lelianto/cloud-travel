@@ -39,7 +39,9 @@ export default class Reviews extends Vue {
   @Prop() public options!: Array<{ label: string; disabled?: boolean }>;
   @Prop({ required: false }) public show!: number;
   @Prop() public restartCheckList!: () => void;
-  @Prop() public updateCheckList!: (e: Array<string>) => void;
+  @Prop({ required: false }) public updateCheckList!: (
+    e: Array<string>
+  ) => void;
   @Prop({ required: false }) public updateShow!: (e: Array<string>) => void;
 }
 </script>

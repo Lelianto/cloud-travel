@@ -1,8 +1,8 @@
 <template>
   <div class="bg-light-grey">
     <HeaderOrg />
-    <div class="flex px-[115px] pt-[60px]">
-      <div class="w-[290px]">
+    <div class="flex px-[115px] pt-[60px] w-full">
+      <div>
         <SideMenusOrg
           :reviews="reviews"
           :restart-review-check-list="restartReviewCheckList"
@@ -31,7 +31,9 @@
         <SearchResultOrg />
       </div>
     </div>
-    <FooterOrg />
+    <div class="w-full mt-[88px]">
+      <FooterOrg />
+    </div>
   </div>
 </template>
 

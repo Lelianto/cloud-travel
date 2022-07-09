@@ -46,10 +46,6 @@ export default class CheckBox extends Vue {
   }>;
   @Prop({ required: false }) public hideLabel!: boolean;
   @Prop({ required: false }) public show!: number;
-  @Prop({ required: false }) public updateCheckList!: (
-    e: Array<string>
-  ) => void;
-  @Prop({ required: false }) public updateShow!: (e: Array<string>) => void;
 
   public checkListModel: Array<string>;
   public initialShow: number;
@@ -64,20 +60,13 @@ export default class CheckBox extends Vue {
     this.initialShow = this.$props.show || 0;
   }
 
-  @Watch("checkList")
-  checkParent(newVal: Array<string>) {
-    this.checkListModel = newVal;
-  }
-
   @Watch("checkListModel")
   emitToCheckList(newVal: Array<string>) {
-    if (newVal) {
-      try {
-        this.$props.updateCheckList(newVal);
-      } catch (err) {
-        console.log({ err });
-      }
-    }
+    this.$emit("updateCheckList", newVal);
+  }
+
+  public updateShow(e: Array<string>) {
+    this.$emit("updateShow", e);
   }
 }
 </script>

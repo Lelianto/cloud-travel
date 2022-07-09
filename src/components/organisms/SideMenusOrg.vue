@@ -21,7 +21,7 @@
       :options="reviews.options"
       :restart-check-list="restartReviewCheckList"
       :show="reviews.show"
-      :update-check-list="updateReviewCheckList"
+      @updateCheckList="updateReviewCheckList"
     >
       <ViewersAmount :options="reviews.options" :show="reviews.show" />
     </Reviews>
@@ -35,7 +35,7 @@
       :restart-check-list="restartStarCheckList"
       :hide-label="starRating.hideLabel"
       :show="starRating.show"
-      :update-check-list="updateStarRatingCheckList"
+      @updateCheckList="updateStarRatingCheckList"
     >
       <div class="absolute left-5 h-full">
         <div class="flex flex-col text-xs justify-around mr-[2px] h-full">
@@ -73,8 +73,8 @@
       :check-list="reservations.checkList"
       :options="reservations.options"
       :restart-check-list="restartReservationCheckList"
-      :update-show="updateReservationShow"
-      :update-check-list="updateReservationCheckList"
+      @updateShow="updateReservationShow"
+      @updateCheckList="updateReservationCheckList"
     >
       <ViewersAmount :options="reservations.options" />
     </Reviews>
@@ -86,8 +86,8 @@
       :check-list="mealPlan.checkList"
       :options="mealPlan.options"
       :restart-check-list="restartMealPlanCheckList"
-      :update-show="updateMealPlanShow"
-      :update-check-list="updateMealPlanCheckList"
+      @updateShow="updateMealPlanShow"
+      @updateCheckList="updateMealPlanCheckList"
       :show="mealPlan.show"
     >
       <ViewersAmount :options="mealPlan.options" :show="mealPlan.show" />
@@ -100,8 +100,8 @@
       :check-list="propertyType.checkList"
       :options="propertyType.options"
       :restart-check-list="restartPropertyTypeCheckList"
-      :update-show="updatePropertyTypeShow"
-      :update-check-list="updatePropertyTypeCheckList"
+      @updateShow="updatePropertyTypeShow"
+      @updateCheckList="updatePropertyTypeCheckList"
       :show="propertyType.show"
     >
       <ViewersAmount
@@ -117,8 +117,8 @@
       :check-list="facilities.checkList"
       :options="facilities.options"
       :restart-check-list="restartFacilitiesCheckList"
-      :update-show="updateFacilitiesShow"
-      :update-check-list="updateFacilitiesCheckList"
+      @updateShow="updateFacilitiesShow"
+      @updateCheckList="updateFacilitiesCheckList"
       :show="facilities.show"
     >
       <ViewersAmount :options="facilities.options" :show="facilities.show" />
@@ -163,16 +163,39 @@ export default class SideMenusOrg extends Vue {
   @Prop() public facilities!: ReviewsProps;
   @Prop() public restartFacilitiesCheckList!: () => void;
 
-  @Prop() public updateReviewCheckList!: (e: Array<string>) => void;
-  @Prop() public updateReservationCheckList!: (e: Array<string>) => void;
-  @Prop() public updateReservationShow!: (e: Array<string>) => void;
-  @Prop() public updateStarRatingCheckList!: (e: Array<string>) => void;
-  @Prop() public updateMealPlanCheckList!: (e: Array<string>) => void;
-  @Prop() public updatePropertyTypeCheckList!: (e: Array<string>) => void;
-  @Prop() public updateFacilitiesCheckList!: (e: Array<string>) => void;
-
-  @Prop() public updateMealPlanShow!: (e: Array<string>) => void;
-  @Prop() public updatePropertyTypeShow!: (e: Array<string>) => void;
-  @Prop() public updateFacilitiesShow!: (e: Array<string>) => void;
+  public updateReviewCheckList(e: Array<string>) {
+    this.$emit("updateReviewCheckList", e);
+  }
+  public updateReservationCheckList(e: Array<string>) {
+    this.$emit("updateReservationCheckList", e);
+  }
+  public updateReservationShow(e: Array<string>) {
+    this.$emit("updateReservationShow", e);
+  }
+  public updateStarRatingCheckList(e: Array<string>) {
+    this.$emit("updateStarRatingCheckList", e);
+  }
+  public updateMealPlanCheckList(e: Array<string>) {
+    this.$emit("updateMealPlanCheckList", e);
+  }
+  public updatePropertyTypeCheckList(e: Array<string>) {
+    this.$emit("updatePropertyTypeCheckList", e);
+  }
+  public updateFacilitiesCheckList(e: Array<string>) {
+    this.$emit("updateFacilitiesCheckList", e);
+  }
+  /**
+   * @function updateMealPlanShow, @function updatePropertyTypeShow, @function updateFacilitiesShow
+   * are to update the show more and show less checkboxes
+   */
+  public updateMealPlanShow(e: Array<string>) {
+    this.$emit("updateMealPlanShow", e);
+  }
+  public updatePropertyTypeShow(e: Array<string>) {
+    this.$emit("updatePropertyTypeShow", e);
+  }
+  public updateFacilitiesShow(e: Array<string>) {
+    this.$emit("updateFacilitiesShow", e);
+  }
 }
 </script>

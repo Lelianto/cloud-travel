@@ -11,8 +11,8 @@
         :options="options"
         :hide-label="hideLabel"
         :show="show"
-        :update-check-list="updateCheckList"
-        :update-show="updateShow"
+        @updateCheckList="updateCheckList"
+        @updateShow="updateShow"
       >
         <slot></slot>
       </CheckBox>
@@ -39,9 +39,13 @@ export default class Reviews extends Vue {
   @Prop() public options!: Array<{ label: string; disabled?: boolean }>;
   @Prop({ required: false }) public show!: number;
   @Prop() public restartCheckList!: () => void;
-  @Prop({ required: false }) public updateCheckList!: (
-    e: Array<string>
-  ) => void;
-  @Prop({ required: false }) public updateShow!: (e: Array<string>) => void;
+
+  public updateShow(e: Array<string>) {
+    this.$emit("updateShow", e);
+  }
+
+  public updateCheckList(e: Array<string>) {
+    this.$emit("updateCheckList", e);
+  }
 }
 </script>

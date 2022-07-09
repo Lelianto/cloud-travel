@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[290px]">
+  <div>
     <!-- Map section -->
     <MapView />
     <div class="py-1" />

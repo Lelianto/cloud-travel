@@ -1,12 +1,24 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
+  <div id="app" class="bg-light-grey">
+    <HeaderOrg />
     <router-view />
+    <div class="w-full mt-[88px]">
+      <FooterOrg />
+    </div>
   </div>
 </template>
+
+<script lang="ts">
+import HeaderOrg from "@/components/organisms/HeaderOrg.vue";
+import FooterOrg from "@/components/organisms/FooterOrg.vue";
+import { Component } from "vue-property-decorator";
+import Vue from "vue";
+
+@Component({
+  components: { FooterOrg, HeaderOrg },
+})
+export default class App extends Vue {}
+</script>
 
 <style lang="scss">
 #app {
@@ -15,18 +27,5 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>

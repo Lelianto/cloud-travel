@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex bg-card rounded-[5px] p-[10px]">
+  <div class="w-full flex bg-card md:rounded-[5px] md:p-2.5">
     <!-- Images Section -->
     <div v-if="!loadingFetchData">
       <ImageLibrary :main-image="data.mainImage" :sub-images="data.subImages" />
@@ -8,31 +8,60 @@
       <ImageLibraryLoading />
     </div>
     <!-- Description Section -->
-    <div v-if="!loadingFetchData" class="ml-[15px]">
-      <div class="flex text-left pt-4">
-        <div class="text-black-three text-base font-[700]">
-          {{ data.productName }}
+    <div
+      v-if="!loadingFetchData"
+      class="ml-4 md:p-0 p-2.5 flex md:flex-row flex-col justify-between flex-1"
+    >
+      <div class="flex-1">
+        <div class="flex text-left md:pt-4">
+          <div class="text-black-three text-base font-[700]">
+            {{ data.productName }}
+          </div>
+          <div class="pt-1 pl-2">
+            <StarRating :rating="data.rating" />
+          </div>
         </div>
-        <div class="pt-1 pl-2">
-          <StarRating :rating="data.rating" />
+        <div class="text-black-three text-xs text-left">
+          {{ data.address }}
+        </div>
+        <div
+          class="md:block hidden mt-[7px] text-placeholder text-left text-xs"
+        >
+          {{ data.description }}
+        </div>
+        <div class="text-left mt-[11px] md:flex hidden">
+          <TicketList :titles="titles" />
+        </div>
+        <div class="md:flex hidden py-[15px]">
+          <img
+            class="w-[16px] h-[20px] mx-[11px]"
+            src="@/assets/images/Shield.svg"
+            alt=""
+          />
+          <div class="text-base text-black-thress">Singapore - SG Clean</div>
         </div>
       </div>
-      <div class="text-black-three text-xs text-left">
-        {{ data.address }}
-      </div>
-      <div class="mt-[7px] text-placeholder text-left text-xs">
-        {{ data.description }}
-      </div>
-      <div class="text-left mt-[11px] flex">
-        <TicketList :titles="titles" />
-      </div>
-      <div class="flex py-[15px]">
+      <!-- Price Section -->
+      <div class="flex flex-col md:justify-between justify-end">
         <img
-          class="w-[16px] h-[20px] mx-[11px]"
-          src="@/assets/images/Shield.svg"
+          src="https://storage.googleapis.com/dev.zumata.com/static/hiring/job01/TY-score-widget-transparent.png"
           alt=""
+          class="w-full md:block hidden"
         />
-        <div class="text-base text-black-thress">Singapore - SG Clean</div>
+        <div class="flex flex-col justify-end items-end">
+          <div class="">
+            <div class="text-white text-xs p-[5px] bg-blue-2 w-fit">
+              SAVE 16% TODAY!
+            </div>
+          </div>
+          <div class="text-right text-placeholder text-base mt-1">
+            Nightly avg.
+          </div>
+          <div>
+            <span class="text-xs line-through">SGD 100</span> {{ " " }}
+            <span class="text-xl font-[700]">SGD 100</span>
+          </div>
+        </div>
       </div>
     </div>
     <div v-else class="ml-[15px] w-full">
@@ -44,31 +73,6 @@
       <SkeletonLoading :styled="'w-[100%] h-[20px]'" />
       <div class="my-5" />
       <SkeletonLoading :styled="'w-[50%] h-[20px]'" />
-    </div>
-    <!-- Price Section -->
-    <div
-      v-if="!loadingFetchData"
-      class="pt-[7px] flex flex-col justify-between"
-    >
-      <img
-        src="https://storage.googleapis.com/dev.zumata.com/static/hiring/job01/TY-score-widget-transparent.png"
-        alt=""
-        class="w-full"
-      />
-      <div>
-        <div class="flex justify-end">
-          <div class="text-white text-xs p-[5px] bg-blue-2 w-fit">
-            SAVE 16% TODAY!
-          </div>
-        </div>
-        <div class="text-right text-placeholder text-base mt-1">
-          Nightly avg.
-        </div>
-        <div>
-          <span class="text-xs line-through">SGD 100</span> {{ " " }}
-          <span class="text-xl font-[700]">SGD 100</span>
-        </div>
-      </div>
     </div>
   </div>
 </template>

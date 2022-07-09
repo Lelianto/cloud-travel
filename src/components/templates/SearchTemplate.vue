@@ -1,8 +1,9 @@
 <template>
-  <div class="bg-light-grey">
-    <HeaderOrg />
-    <div class="flex px-[115px] pt-[60px] w-full">
-      <div>
+  <div class="mt-4">
+    <div
+      class="flex lg:flex-nowrap flex-wrap lg:container px-4 w-full lg:space-x-4"
+    >
+      <div class="lg:block hidden lg:w-1/4">
         <SideMenusOrg
           :reviews="reviews"
           :restart-review-check-list="restartReviewCheckList"
@@ -27,30 +28,23 @@
           :update-facilities-show="updateFacilitiesShow"
         />
       </div>
-      <div class="w-full pl-4">
+      <div class="w-full lg:w-3/4">
         <SearchResultOrg />
       </div>
-    </div>
-    <div class="w-full mt-[88px]">
-      <FooterOrg />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import HeaderOrg from "@/components/organisms/HeaderOrg.vue";
 import SideMenusOrg from "@/components/organisms/SideMenusOrg.vue";
 import SearchResultOrg from "@/components/organisms/SearchResultOrg.vue";
-import FooterOrg from "@/components/organisms/FooterOrg.vue";
 import { ReviewsProps } from "@/utils/interface";
 
 @Component({
   components: {
-    HeaderOrg,
     SideMenusOrg,
     SearchResultOrg,
-    FooterOrg,
   },
 })
 export default class SearchTemplate extends Vue {

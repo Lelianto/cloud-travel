@@ -72,32 +72,19 @@
               </template>
             </el-input>
             <div
-              v-if="inputCity"
+              v-if="inputCity && $props?.citySuggestion?.length !== 0"
               class="absolute bg-white top-[55px] rounded-md border-line border-[1px] w-full"
             >
               <div class="flex flex-col justify-around w-full cursor-pointer">
                 <div
+                  v-for="(suggest, index) in $props.citySuggestion"
+                  :key="`suggest-${suggest.cityCode}-${index}`"
                   class="flex justify-left py-[10px] pl-[12px] w-full hover:bg-gray-200 hover:rounded-sm"
+                  @click="addQueryParams(suggest.cityCode)"
                 >
                   <img src="@/assets/images/LocationPoint.svg" alt="point" />
                   <div class="pl-[10px] cursor-pointer">
-                    Singapore, Singapore
-                  </div>
-                </div>
-                <div
-                  class="flex justify-left py-[10px] pl-[12px] w-full hover:bg-gray-200 hover:rounded-sm"
-                >
-                  <img src="@/assets/images/LocationPoint.svg" alt="point" />
-                  <div class="pl-[10px] cursor-pointer">
-                    Kuala Lumpur, Malaysia
-                  </div>
-                </div>
-                <div
-                  class="flex justify-left py-[10px] pl-[12px] w-full hover:bg-gray-200 hover:rounded-sm"
-                >
-                  <img src="@/assets/images/LocationPoint.svg" alt="point" />
-                  <div class="pl-[10px] cursor-pointer">
-                    Manila, Phillipines
+                    {{ suggest.label }}
                   </div>
                 </div>
               </div>
@@ -588,7 +575,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 import IconFilters from "@/components/icons/IconFilters.vue";
 import Reviews from "@/components/molecules/Reviews.vue";
 import SliderBox from "@/components/atoms/Slider.vue";
@@ -606,6 +593,7 @@ import SearchHotel from "@/components/atoms/SearchHotel.vue";
   },
 })
 export default class HeaderOrg extends Vue {
+  @Prop() public citySuggestion!: Array<{ label: string; cityCode: string }>;
   public inputCity: string;
   public options: object;
   public selectValue: string;
@@ -949,6 +937,11 @@ export default class HeaderOrg extends Vue {
 
   public restartReviewCheckList() {
     this.reviews.checkList = [];
+  }
+
+  public addQueryParams(param: string) {
+    this.$router.push(`/?city=${param}`);
+    this.inputCity = "";
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="bg-light-grey">
-    <HeaderOrg />
+    <HeaderOrg :city-suggestion="citySuggestion" />
     <router-view />
     <div class="w-full mt-[88px]">
       <FooterOrg />
@@ -17,7 +17,29 @@ import Vue from "vue";
 @Component({
   components: { FooterOrg, HeaderOrg },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  public citySuggestion: Array<{ label: string; cityCode: string }>;
+
+  constructor() {
+    super();
+    this.citySuggestion = [];
+  }
+
+  mounted() {
+    this.getAutoSuggest();
+  }
+
+  public async getAutoSuggest() {
+    await this.$store
+      .dispatch("getSuggestion")
+      .then((response) => {
+        this.citySuggestion = response.data;
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }
+}
 </script>
 
 <style lang="scss">

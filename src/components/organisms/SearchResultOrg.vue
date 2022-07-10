@@ -5,7 +5,7 @@
     </div>
     <div class="w-full lg:grid hidden grid-cols-4 mb-[15px]">
       <div
-        :class="`p-3 text-sm border-y-white border-l-white border-custom rounded-l-[3px] hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
+        :class="`text-center p-3 text-sm border-y-white border-l-white border-custom rounded-l-[3px] hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
           choosenMenu === 1
             ? 'bg-blue-1 text-white font-[700]'
             : 'text-black-three bg-white'
@@ -16,7 +16,7 @@
       </div>
       <div class="w-full relative">
         <div
-          :class="`p-3 text-sm border-y-white border-l-white border-custom hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
+          :class="`text-center p-3 text-sm border-y-white border-l-white border-custom hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
             choosenMenu === 2
               ? 'bg-blue-1 text-white font-[700]'
               : 'text-black-three bg-white'
@@ -30,14 +30,14 @@
         </div>
         <div
           v-if="showOption"
-          class="absolute z-10 w-full text-black-three py-3 text-sm bg-white border-y-white rounded-[3px] shadow-custom mt-1 border-l-white hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer"
+          class="text-center absolute z-10 w-full text-black-three py-3 text-sm bg-white border-y-white rounded-[3px] shadow-custom mt-1 border-l-white hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer"
           @click="chooseSorting(sortByPrice.notChoosen)"
         >
           {{ sortByPrice.notChoosen }}
         </div>
       </div>
       <div
-        :class="`p-3 text-sm border-y-white border-l-white border-custom hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
+        :class="`text-center p-3 text-sm border-y-white border-l-white border-custom hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
           choosenMenu === 3
             ? 'bg-blue-1 text-white font-[700]'
             : 'text-black-three bg-white'
@@ -47,7 +47,7 @@
         Reviews
       </div>
       <div
-        :class="`p-3 text-sm border-y-white border-l-white rounded-r-[3px] hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
+        :class="`text-center p-3 text-sm border-y-white border-l-white rounded-r-[3px] hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
           choosenMenu === 4
             ? 'bg-blue-1 text-white font-[700]'
             : 'text-black-three bg-white'
@@ -57,7 +57,7 @@
         Discount
       </div>
     </div>
-    <div class="w-full">
+    <div v-if="productUi === 'HAS_RESULTS'" class="w-full">
       <div
         v-for="(item, index) in [...Array(3)]"
         :key="`product-${item}-${index}`"
@@ -66,11 +66,13 @@
         <Product />
       </div>
     </div>
+    <div v-if="productUi === 'NO_RESULT'">NO_RESULT</div>
+    <div v-if="productUi === 'SEARCH_ERROR'">SEARCH_ERROR</div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import Product from "@/components/molecules/Product.vue";
 
 @Component({
@@ -79,9 +81,11 @@ import Product from "@/components/molecules/Product.vue";
   },
 })
 export default class SearchResultOrg extends Vue {
+  @Prop() public route?: string;
   public choosenMenu: number;
   public sortByPrice: { choosen: string; notChoosen: string };
   public showOption: boolean;
+  public productUi: "HAS_RESULTS" | "NO_RESULT" | "SEARCH_ERROR";
 
   constructor() {
     super();
@@ -91,6 +95,29 @@ export default class SearchResultOrg extends Vue {
       notChoosen: "Price (highest first)",
     };
     this.showOption = false;
+    this.productUi = "HAS_RESULTS";
+  }
+
+  @Watch("$route")
+  checkRoute(newRoute: { query: { city: string } }) {
+    this.translateRoute(newRoute.query.city);
+  }
+
+  mounted() {
+    this.translateRoute(this.$route.query.city as string);
+  }
+
+  public translateRoute(route?: string) {
+    switch (route) {
+      case "klmy":
+        this.productUi = "NO_RESULT";
+        break;
+      case "mlph":
+        this.productUi = "SEARCH_ERROR";
+        break;
+      default:
+        this.productUi = "HAS_RESULTS";
+    }
   }
 
   public chooseMenu(index: number) {

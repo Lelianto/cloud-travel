@@ -1,5 +1,6 @@
 <template>
   <SearchTemplate
+    :city-suggestion="citySuggestion"
     :reviews="reviews"
     :restart-review-check-list="restartReviewCheckList"
     :star-rating="starRating"

@@ -29,7 +29,7 @@
         />
       </div>
       <div class="w-full lg:w-3/4">
-        <SearchResultOrg />
+        <SearchResultOrg :route="route" />
       </div>
     </div>
   </div>
@@ -65,6 +65,8 @@ export default class SearchTemplate extends Vue {
 
   @Prop() public facilities!: ReviewsProps;
   @Prop() public restartFacilitiesCheckList!: () => void;
+
+  @Prop() public route?: string;
 
   public updateReviewCheckList(e: Array<string>) {
     this.$emit("updateReviewCheckList", e);

@@ -8,9 +8,11 @@ import "./assets/scss/style.scss";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import axios from "axios";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI, { locale });
+Vue.prototype.$http = axios;
 
 new Vue({
   router,

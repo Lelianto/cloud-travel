@@ -1,25 +1,22 @@
 <template functional>
-  <div>
+  <div class="flex flex-col items-center sm:max-w-[204px] max-w-[150px]">
     <img
       v-if="props.mainImage"
-      class="w-[200px] h-[160px]"
+      class="w-full h-full"
       :src="props.mainImage"
       alt=""
     />
     <div
       v-if="props.subImages?.length !== 0"
-      class="flex justify-between mt-[2px]"
+      class="sm:flex hidden justify-between space-x-1 mt-1"
     >
-      <div
+      <img
         v-for="(image, index) in props.subImages"
+        class="h-[48px] w-[48px]"
         :key="`sub-image-${index}`"
-      >
-        <img
-          :class="`h-[48px] w-[48px] ${index !== 0 ? 'ml-[2px]' : ''}`"
-          :src="image"
-          alt=""
-        />
-      </div>
+        :src="image"
+        alt=""
+      />
     </div>
   </div>
 </template>

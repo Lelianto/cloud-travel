@@ -38,7 +38,7 @@
       @updateCheckList="updateStarRatingCheckList"
     >
       <div class="absolute left-5 h-full">
-        <div class="flex flex-col text-xs justify-around mr-[2px] h-full">
+        <div class="flex flex-col text-xs justify-between mr-[2px] h-full">
           <div
             v-for="(option, index) in starRating.options"
             :key="`${option.label}-star-${index}`"

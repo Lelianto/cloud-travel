@@ -1,35 +1,55 @@
 <template>
   <div>
     <div class="flex justify-between relative">
-      <el-checkbox-group v-model="checkListModel" class="flex flex-col">
-        <el-checkbox
+      <div class="flex flex-col">
+        <div
           v-for="(option, index) in options"
-          :key="`${option.label}-${index}`"
-          :label="option.label"
-          :disabled="option.disabled"
-          :checked="checkList.includes(option.label)"
-          :class="`text-left custom-color ${hideLabel ? 'hide-label' : ''} ${
-            show && index >= show ? 'hide-temporary' : ''
-          }`"
-        ></el-checkbox>
-      </el-checkbox-group>
+          :key="`${option.label}-custom-${index}`"
+          class="flex"
+        >
+          <input
+            :id="`${option.label}-custom-${index}`"
+            type="checkbox"
+            :name="option.label"
+            :value="option.label"
+            :class="`${show && index >= show ? 'hide-temporary' : ''} ${
+              index !== 0 ? 'mt-[10px]' : ''
+            }`"
+            :checked="checkListModel.includes(option.label)"
+            :data-testId="`check-box-${index}`"
+            v-model="checkListModel"
+          />
+          <div
+            :class="`flex flex-col justify-center text-xs ${
+              hideLabel ? 'text-white text-[1px]' : 'text-black pl-1'
+            } ${show && index >= show ? 'hide-temporary' : ''} ${
+              index !== 0 ? 'mt-[10px]' : ''
+            }`"
+            :data-testid="`label-${index}`"
+          >
+            {{ option.label }}
+          </div>
+        </div>
+      </div>
       <slot></slot>
     </div>
     <div
       v-if="show && show !== options.length"
-      class="text-left text-xs mt-1 text-blue-1 cursor-pointer"
+      class="text-left text-xs mt-[10px] text-blue-1 cursor-pointer"
       @click="updateShow(options.length)"
+      data-testId="show-more"
     >
       Show {{ options.length - show }} more
       <span class="text-[8px]">&#x25BC;</span>
     </div>
     <div
       v-if="show && show === options.length"
-      class="text-left text-xs mt-1 text-blue-1 cursor-pointer"
+      class="text-left text-xs mt-[10px] text-blue-1 cursor-pointer"
       @click="updateShow(initialShow)"
+      data-testId="show-less"
     >
       Show less
-      <span class="text-[8px]">&#x25B4;</span>
+      <span class="text-[16px]">&#x25B4;</span>
     </div>
   </div>
 </template>
@@ -52,12 +72,19 @@ export default class CheckBox extends Vue {
 
   constructor() {
     super();
-    this.checkListModel = [];
     this.initialShow = 0;
+    this.checkListModel = [];
   }
 
   mounted() {
     this.initialShow = this.$props.show || 0;
+  }
+
+  @Watch("checkList")
+  emitFromParent(newVal: Array<string>) {
+    if (newVal.length === 0 && this.checkListModel.length !== 0) {
+      this.checkListModel = [];
+    }
   }
 
   @Watch("checkListModel")
@@ -94,6 +121,6 @@ export default class CheckBox extends Vue {
   }
 }
 .hide-temporary {
-  display: none;
+  display: none !important;
 }
 </style>

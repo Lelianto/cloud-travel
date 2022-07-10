@@ -1,5 +1,5 @@
 <template functional>
-  <div class="flex flex-col text-xs justify-around mr-[2px]">
+  <div class="flex flex-col text-xs justify-between mr-[2px]">
     <div
       v-for="(option, index) in props.options"
       :key="`${option.label}-number-${index}`"

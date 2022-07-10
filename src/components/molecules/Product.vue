@@ -1,27 +1,31 @@
 <template>
   <div class="w-full flex bg-card md:rounded-[5px] md:p-2.5">
     <!-- Images Section -->
-    <div v-if="!loadingFetchData">
-      <ImageLibrary :main-image="data.mainImage" :sub-images="data.subImages" />
-    </div>
-    <div v-else>
+    <template v-if="!loadingFetchData">
+      <ImageLibrary
+        class="h-full"
+        :main-image="data.mainImage"
+        :sub-images="data.subImages"
+      />
+    </template>
+    <template v-else>
       <ImageLibraryLoading />
-    </div>
+    </template>
     <!-- Description Section -->
     <div
       v-if="!loadingFetchData"
-      class="ml-4 md:p-0 p-2.5 flex md:flex-row flex-col justify-between flex-1"
+      class="md:ml-4 ml-2 md:p-0 p-2.5 flex md:flex-row flex-col justify-between md:space-y-0 space-y-2 flex-1"
     >
       <div class="flex-1">
-        <div class="flex text-left md:pt-4">
+        <div class="md:flex items-center md:space-x-2 text-left md:pt-4">
           <div class="text-black-three text-base font-[700]">
             {{ data.productName }}
           </div>
-          <div class="pt-1 pl-2">
+          <div>
             <StarRating :rating="data.rating" />
           </div>
         </div>
-        <div class="text-black-three text-xs text-left">
+        <div class="text-black-three text-xs text-left mt-1">
           {{ data.address }}
         </div>
         <div

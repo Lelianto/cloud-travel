@@ -3,9 +3,9 @@
     <div class="text-base text-black font-[700] text-left mb-3">
       Singapore: 9999 properties found
     </div>
-    <div class="w-full grid grid-cols-4 mb-[15px]">
+    <div class="w-full lg:grid hidden grid-cols-4 mb-[15px]">
       <div
-        :class="`py-3 text-sm border-y-white border-l-white border-custom rounded-l-[3px] hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
+        :class="`p-3 text-sm border-y-white border-l-white border-custom rounded-l-[3px] hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
           choosenMenu === 1
             ? 'bg-blue-1 text-white font-[700]'
             : 'text-black-three bg-white'
@@ -16,7 +16,7 @@
       </div>
       <div class="w-full relative">
         <div
-          :class="`py-3 text-sm border-y-white border-l-white border-custom hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
+          :class="`p-3 text-sm border-y-white border-l-white border-custom hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
             choosenMenu === 2
               ? 'bg-blue-1 text-white font-[700]'
               : 'text-black-three bg-white'
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div
-        :class="`py-3 text-sm border-y-white border-l-white border-custom hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
+        :class="`p-3 text-sm border-y-white border-l-white border-custom hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
           choosenMenu === 3
             ? 'bg-blue-1 text-white font-[700]'
             : 'text-black-three bg-white'
@@ -47,7 +47,7 @@
         Reviews
       </div>
       <div
-        :class="`py-3 text-sm border-y-white border-l-white rounded-r-[3px] hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
+        :class="`p-3 text-sm border-y-white border-l-white rounded-r-[3px] hover:bg-blue-1 hover:font-[700] hover:text-white cursor-pointer ${
           choosenMenu === 4
             ? 'bg-blue-1 text-white font-[700]'
             : 'text-black-three bg-white'

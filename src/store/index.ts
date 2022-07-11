@@ -42,7 +42,6 @@ export default new Vuex.Store({
           `${process.env.VUE_APP_CORS_RESOLVER}/${process.env.VUE_APP_API_END_POINT}/job01/search/${cityCode}`
         )
         .then((response) => {
-          console.log({ response });
           commit("setSearchResult", response.data.outlets);
           return response;
         })

@@ -4,7 +4,7 @@
       v-if="props.mainImage"
       class="w-full h-full object-cover lg:max-h-[160px]"
       :src="props.mainImage"
-      alt=""
+      alt="main-image"
     />
     <div
       v-if="props.subImages?.length !== 0"
@@ -15,7 +15,7 @@
         class="h-[48px] w-[48px] object-cover"
         :key="`sub-image-${index}`"
         :src="image"
-        alt=""
+        alt="sub-image"
       />
     </div>
   </div>

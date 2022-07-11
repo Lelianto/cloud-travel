@@ -3,8 +3,14 @@
     <div class="flex justify-center mb-4">
       <img :src="props.image" alt="custom" />
     </div>
-    <div class="text-base text-placeholder">{{ props.text }}</div>
-    <div v-if="props.description" class="text-xs text-placeholder mt-1">
+    <div id="error-text" class="text-base text-placeholder">
+      {{ props.text }}
+    </div>
+    <div
+      id="error-description"
+      v-if="props.description"
+      class="text-xs text-placeholder mt-1"
+    >
       {{ props.description }}
     </div>
   </div>

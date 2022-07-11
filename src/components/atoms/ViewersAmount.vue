@@ -4,6 +4,7 @@
       v-for="(option, index) in props.options"
       :key="`${option.label}-number-${index}`"
       :class="`${props.show && index >= props.show ? 'hidden' : ''}`"
+      :data-testId="`viewer-${index}`"
     >
       999
     </div>

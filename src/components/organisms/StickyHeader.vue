@@ -5,6 +5,7 @@
         <el-input
           class="py-[10px] h-full w-search-1"
           placeholder="Please input"
+          id="input-search"
           v-model="inputCity"
         >
           <template slot="prepend">
@@ -25,12 +26,12 @@
             <div
               v-for="(suggest, index) in $props.citySuggestion"
               :key="`suggest-${suggest.cityCode}-${index}`"
+              :id="`city-${index}`"
               class="flex justify-left py-[10px] pl-[12px] w-full hover:bg-gray-200 hover:rounded-sm"
               @click="inputSearch(suggest)"
             >
-              <!-- @click="addQueryParams(suggest.cityCode)" -->
               <img src="@/assets/images/LocationPoint.svg" alt="point" />
-              <div class="pl-[10px] cursor-pointer">
+              <div data-testId="suggest-label" class="pl-[10px] cursor-pointer">
                 {{ suggest.label }}
               </div>
             </div>
@@ -116,6 +117,7 @@
             @click="routeSaved ? addQueryParams(routeSaved) : ''"
             :disabled="!routeSaved"
             class="bg-blue-2 w-[150px] text-white border-none"
+            id="search-button"
             >Search</el-button
           >
         </div>

@@ -10,6 +10,7 @@
       <div class="h-full flex flex-col justify-center">
         <div
           class="text-sm bg-blue-1 text-white w-fit h-fit py-3 px-[39px] rounded-[3px]"
+          data-testId="text-map"
         >
           Show on map
         </div>

@@ -1,6 +1,7 @@
 <template functional>
   <div
     class="w-fit text-blue-2 text-xs px-[5px] py-[2px] border-[1px] border-blue-2 cursor-pointer"
+    data-testId="ticket-title"
   >
     {{ props.title }}
   </div>

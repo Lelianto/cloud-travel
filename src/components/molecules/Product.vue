@@ -18,7 +18,10 @@
     >
       <div class="flex-1">
         <div class="md:flex items-center md:space-x-2 text-left md:pt-4">
-          <div class="text-black-three text-base font-[700]">
+          <div
+            :id="`title-${index}`"
+            class="text-black-three text-base font-[700]"
+          >
             {{ $props.outlet?.property?.name }}
           </div>
           <div>

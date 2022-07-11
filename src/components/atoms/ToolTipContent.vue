@@ -4,6 +4,7 @@
       v-for="(check, i) in props.titles"
       :key="`${check}-check-${i}`"
       class="flex text-xs px-[15px] py-[6px]"
+      :data-testId="`tooltip-content-${i}`"
     >
       <slot></slot>
       {{ check }}

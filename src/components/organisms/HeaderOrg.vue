@@ -96,7 +96,11 @@
         </svg>
       </div>
       <div class="bg-white border-b px-5 py-2">
-        <div class="flex items-center space-x-3" @click="navbarSearch = true">
+        <div
+          id="search-trigger"
+          class="flex items-center space-x-3"
+          @click="navbarSearch = true"
+        >
           <!--icon search-->
           <svg
             width="16"
@@ -366,6 +370,7 @@
               <el-input
                 class="w-search-2"
                 placeholder="Please input"
+                id="input-search-mobile"
                 v-model="inputCity"
               >
                 <template slot="prepend">
@@ -390,8 +395,8 @@
                     :key="`suggest-${suggest.cityCode}-${index}`"
                     class="flex justify-left py-[10px] pl-[12px] w-full hover:bg-gray-200 hover:rounded-sm"
                     @click="inputSearch(suggest)"
+                    :id="`mobile-city-${index}`"
                   >
-                    <!-- @click="addQueryParams(suggest.cityCode)" -->
                     <img src="@/assets/images/LocationPoint.svg" alt="point" />
                     <div class="pl-[10px] cursor-pointer">
                       {{ suggest.label }}
@@ -475,6 +480,7 @@
                 @click="routeSaved ? addQueryParams(routeSaved) : ''"
                 :disabled="!routeSaved"
                 class="bg-blue-2 w-[150px] text-white border-none"
+                id="search-button-mobile"
               >
                 Search
               </el-button>

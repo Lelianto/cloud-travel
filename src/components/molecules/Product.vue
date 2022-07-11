@@ -141,7 +141,7 @@ export default class Product extends Vue {
     this.fetchImages();
   }
   @Watch("$store.state.outlets")
-  getImages(newVal: any) {
+  getImages(newVal: string) {
     if (newVal) {
       this.fetchImages();
     }
@@ -216,7 +216,12 @@ export default class Product extends Vue {
     return address;
   }
 
-  public calculateDiscount(packages: any[]) {
+  public calculateDiscount(
+    packages: {
+      displayRate: { value: number };
+      adjustedDisplayRate: { value: number };
+    }[]
+  ) {
     const pack = packages[0];
     const discountPercentage =
       ((pack.displayRate.value - pack.adjustedDisplayRate.value) /

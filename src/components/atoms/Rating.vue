@@ -1,5 +1,5 @@
 <template functional>
-  <div class="flex">
+  <div class="flex relative">
     <el-rate
       v-model="props.rating"
       class="custom-rate"

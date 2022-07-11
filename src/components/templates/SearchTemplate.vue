@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4">
+  <div class="mt-4 relative">
     <div
       class="flex lg:flex-nowrap flex-wrap lg:container px-4 w-full lg:space-x-4"
     >

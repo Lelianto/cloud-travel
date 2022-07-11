@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky top-0 z-40">
+  <div>
     <!-- Header Web Version-->
     <div class="lg:block hidden">
       <div class="w-full bg-white">
@@ -51,123 +51,6 @@
               </div>
               <a href="#" class="px-3">My Account</a>
               <a href="#" class="pl-3">Logout</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="w-full bg-blue-1">
-        <div class="grid grid-cols-2 gap-2 lg:container px-4">
-          <div class="relative w-full">
-            <el-input
-              class="py-[10px] h-full w-search-1"
-              placeholder="Please input"
-              v-model="inputCity"
-            >
-              <template slot="prepend">
-                <img
-                  class="w-[15px] h-[15px] mx-auto"
-                  src="@/assets/images/Search.svg"
-                  alt="search"
-                />
-              </template>
-            </el-input>
-            <div
-              v-if="inputCity && $props?.citySuggestion?.length !== 0"
-              class="absolute bg-white top-[55px] rounded-md border-line border-[1px] w-full"
-            >
-              <div class="flex flex-col justify-around w-full cursor-pointer">
-                <div
-                  v-for="(suggest, index) in $props.citySuggestion"
-                  :key="`suggest-${suggest.cityCode}-${index}`"
-                  class="flex justify-left py-[10px] pl-[12px] w-full hover:bg-gray-200 hover:rounded-sm"
-                  @click="addQueryParams(suggest.cityCode)"
-                >
-                  <img src="@/assets/images/LocationPoint.svg" alt="point" />
-                  <div class="pl-[10px] cursor-pointer">
-                    {{ suggest.label }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="grid grid-cols-3 gap-2">
-            <div class="py-[10px] relative">
-              <el-date-picker
-                v-model="date"
-                type="daterange"
-                align="right"
-                start-placeholder="Start"
-                end-placeholder="End"
-                default-value="2022-07-01"
-                class="h-full w-date"
-                format="MMM dd"
-                :picker-options="pickerOptions"
-              >
-              </el-date-picker>
-              <div
-                class="absolute right-[10px] top-0 bottom-0 m-auto z-10 text-xs flex flex-col justify-center text-placeholder"
-              >
-                {{ nights }} night
-              </div>
-            </div>
-            <div class="relative">
-              <label
-                class="absolute w-full z-10 flex flex-col justify-center h-full text-xs text-black px-2"
-                for="selectValueId"
-                >{{ selectValue.length !== 0 ? selectValue : "" }}
-              </label>
-              <el-select
-                v-model="selectValue"
-                id="selectValueId"
-                class="py-[10px] h-full col-span-1 w-full delete-suffix"
-                multiple
-                allow-create
-                default-first-option
-                placeholder=""
-              >
-                <el-option :value="''" disabled class="option-size">
-                  <el-input-number
-                    v-model="options.value1"
-                    :min="0"
-                    :max="10"
-                  ></el-input-number>
-                  <div
-                    class="text-black pl-2 flex flex-col justify-center relative z-10"
-                  >
-                    Adults
-                  </div>
-                </el-option>
-                <el-option :value="''" disabled class="option-size">
-                  <el-input-number
-                    v-model="options.value2"
-                    :min="0"
-                    :max="10"
-                  ></el-input-number>
-                  <div
-                    class="text-black pl-2 flex flex-col justify-center relative z-1"
-                  >
-                    Children
-                  </div>
-                </el-option>
-                <el-option :value="''" disabled class="option-size">
-                  <el-input-number
-                    v-model="options.value3"
-                    :min="0"
-                    :max="10"
-                  ></el-input-number>
-                  <div
-                    class="text-black pl-2 flex flex-col justify-center relative z-1"
-                  >
-                    Rooms
-                  </div>
-                </el-option>
-              </el-select>
-            </div>
-
-            <div class="py-[10px] flex flex-start">
-              <el-button class="bg-blue-2 w-[150px] text-white border-none"
-                >Search</el-button
-              >
             </div>
           </div>
         </div>
@@ -228,7 +111,9 @@
             />
           </svg>
           <div>
-            <h5 class="font-semibold">Singapore, Singapore</h5>
+            <h5 class="font-semibold">
+              {{ translateRoute(routeSaved) || "Singapore, Singapore" }}
+            </h5>
             <div class="flex flex-row flex-wrap space-x-6 items-center text-sm">
               <span>Aug 18 - Aug 19</span>
               <span>2 adults, 1 room, 0 children</span>
@@ -311,7 +196,7 @@
       <Transition name="fade">
         <div
           v-if="navbarFilters"
-          class="fixed inset-0 bg-light-grey overflow-y-auto"
+          class="fixed z-[55] inset-0 bg-light-grey overflow-y-auto"
         >
           <!--Header Filters-->
           <div class="sticky top-0 z-50 bg-white p-4 border-b">
@@ -455,7 +340,7 @@
       </Transition>
       <!-- Search Navbar -->
       <Transition name="fade">
-        <div v-if="navbarSearch" class="fixed inset-0 bg-white">
+        <div v-if="navbarSearch" class="fixed z-50 inset-0 bg-white">
           <div class="bg-white p-4 border-b">
             <div class="flex items-center space-x-4 text-blue-1">
               <svg
@@ -477,7 +362,7 @@
             </div>
           </div>
           <div class="p-5">
-            <div class="flex flex-col space-y-4">
+            <div class="flex flex-col space-y-4 relative">
               <el-input
                 class="w-search-2"
                 placeholder="Please input"
@@ -491,6 +376,29 @@
                   />
                 </template>
               </el-input>
+              <div
+                v-if="
+                  inputCity &&
+                  !routeSaved &&
+                  $props?.citySuggestion?.length !== 0
+                "
+                class="absolute z-[55] top-[30px] bg-white rounded-md border-line border-[1px] w-full"
+              >
+                <div class="flex flex-col justify-around w-full cursor-pointer">
+                  <div
+                    v-for="(suggest, index) in $props.citySuggestion"
+                    :key="`suggest-${suggest.cityCode}-${index}`"
+                    class="flex justify-left py-[10px] pl-[12px] w-full hover:bg-gray-200 hover:rounded-sm"
+                    @click="inputSearch(suggest)"
+                  >
+                    <!-- @click="addQueryParams(suggest.cityCode)" -->
+                    <img src="@/assets/images/LocationPoint.svg" alt="point" />
+                    <div class="pl-[10px] cursor-pointer">
+                      {{ suggest.label }}
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="relative">
                 <el-date-picker
                   v-model="date"
@@ -563,7 +471,11 @@
                   </el-option>
                 </el-select>
               </div>
-              <el-button class="bg-blue-2 w-[150px] text-white border-none">
+              <el-button
+                @click="routeSaved ? addQueryParams(routeSaved) : ''"
+                :disabled="!routeSaved"
+                class="bg-blue-2 w-[150px] text-white border-none"
+              >
                 Search
               </el-button>
             </div>
@@ -612,6 +524,7 @@ export default class HeaderOrg extends Vue {
   public mealPlan: ReviewsProps;
   public propertyType: ReviewsProps;
   public facilities: ReviewsProps;
+  public routeSaved: string;
 
   constructor() {
     super();
@@ -838,6 +751,7 @@ export default class HeaderOrg extends Vue {
         },
       ],
     };
+    this.routeSaved = "";
   }
 
   @Watch("date")
@@ -855,6 +769,20 @@ export default class HeaderOrg extends Vue {
   })
   optionsChanged(newVal: { value1: number; value2: number; value3: number }) {
     this.selectValue = `${newVal.value1} adults, ${newVal.value2} children, ${newVal.value3} rooms`;
+  }
+
+  @Watch("inputCity")
+  onInputSearch(newVal: string) {
+    const filterResult = this.$props.citySuggestion.filter(
+      (city: { label: string }) => {
+        return city.label === newVal;
+      }
+    );
+    if (filterResult.length !== 0) {
+      this.routeSaved = filterResult[0].cityCode;
+    } else if (newVal) {
+      this.routeSaved = "";
+    }
   }
 
   mounted() {
@@ -945,6 +873,10 @@ export default class HeaderOrg extends Vue {
     this.reviews.checkList = [];
   }
 
+  public inputSearch(suggest: { label: string; cityCode: string }) {
+    this.inputCity = suggest.label;
+  }
+
   public addQueryParams(param: string) {
     this.searchPlace(param);
     this.$router.push(`/?city=${param}`);
@@ -952,9 +884,27 @@ export default class HeaderOrg extends Vue {
   }
 
   public searchPlace(cityCode: string) {
-    this.$store.dispatch("search", {
-      cityCode,
-    });
+    this.$store
+      .dispatch("search", {
+        cityCode,
+      })
+      .then(() => {
+        this.navbarSearch = false;
+      })
+      .catch(() => {
+        this.navbarSearch = false;
+      });
+  }
+
+  public translateRoute(cityCode: string) {
+    switch (cityCode) {
+      case "sgsg":
+        return "Singapore, Singapore";
+      case "klmy":
+        return "Kuala Lumpur, Malaysia";
+      case "mlph":
+        return "Manila, Philippines";
+    }
   }
 }
 </script>
@@ -1012,6 +962,22 @@ export default class HeaderOrg extends Vue {
   }
   .el-range-separator {
     padding: 0 !important;
+  }
+}
+@media screen and (max-width: 900px) {
+  .el-picker-panel__body-wrapper {
+    max-width: 100vw;
+    overflow-x: scroll;
+    .el-picker-panel__body {
+      display: flex;
+    }
+  }
+  .el-select-dropdown__item {
+    height: fit-content !important;
+  }
+  .el-button.is-disabled {
+    background-color: lightgrey !important;
+    color: black !important;
   }
 }
 </style>

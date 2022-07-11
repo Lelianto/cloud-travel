@@ -32,7 +32,7 @@
           :pager-count="11"
           layout="prev, pager, next"
           :total="13"
-          class="custom-pagination text-center lg:text-right"
+          class="custom-pagination text-center lg:text-right mt-3 lg:mt-0"
         >
         </el-pagination>
       </div>
@@ -103,10 +103,11 @@ export default class FooterOrg extends Vue {
 
 @media screen and (max-width: 900px) {
   .custom-pagination {
+    padding: 0 !important;
     .el-pager {
       li {
         min-width: fit-content !important;
-        margin: 0px 3px;
+        margin: 0px 1px;
       }
     }
   }

@@ -56,17 +56,28 @@
           class="w-full md:block hidden"
         />
         <div class="flex flex-col justify-end items-end">
-          <div class="">
+          <div
+            v-if="calculateDiscount($props.outlet?.packages) * 1 > 0"
+            class=""
+          >
             <div class="text-white text-xs p-[5px] bg-blue-2 w-fit">
-              SAVE 16% TODAY!
+              SAVE {{ calculateDiscount($props.outlet?.packages) }}% TODAY!
             </div>
           </div>
           <div class="text-right text-placeholder text-base mt-1">
             Nightly avg.
           </div>
           <div>
-            <span class="text-xs line-through">SGD 100</span> {{ " " }}
-            <span class="text-xl font-[700]">SGD 100</span>
+            <span
+              v-if="calculateDiscount($props.outlet?.packages) * 1 > 0"
+              class="text-xs line-through"
+              >{{ $props.outlet?.packages[0]?.displayRate.currency }}
+              {{ $props.outlet?.packages[0]?.displayRate.value }}{{ " " }}</span
+            >
+            <span class="text-xl font-[700]"
+              >{{ $props.outlet?.packages[0]?.adjustedDisplayRate.currency }}
+              {{ $props.outlet?.packages[0]?.adjustedDisplayRate.value }}</span
+            >
           </div>
         </div>
       </div>
@@ -175,7 +186,9 @@ export default class Product extends Vue {
         }
       );
       this.images = images;
-      this.loadingFetchData = false;
+      setTimeout(() => {
+        this.loadingFetchData = false;
+      }, 1000);
     }
   }
 
@@ -201,6 +214,17 @@ export default class Product extends Vue {
     }
 
     return address;
+  }
+
+  public calculateDiscount(packages: any[]) {
+    const pack = packages[0];
+    const discountPercentage =
+      ((pack.displayRate.value - pack.adjustedDisplayRate.value) /
+        pack.displayRate.value) *
+      100;
+    const formattedValue =
+      discountPercentage.toString().match(/^-?\d+(?:\.\d{0,2})?/) || [];
+    return formattedValue?.length !== 0 && formattedValue[0];
   }
 
   public setTitles(

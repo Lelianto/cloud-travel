@@ -857,6 +857,12 @@ export default class HeaderOrg extends Vue {
     this.selectValue = `${newVal.value1} adults, ${newVal.value2} children, ${newVal.value3} rooms`;
   }
 
+  mounted() {
+    if (this.$route?.query?.city) {
+      this.searchPlace(this.$route.query.city as string);
+    }
+  }
+
   public restartReservationCheckList() {
     this.reservations.checkList = [];
   }
@@ -940,8 +946,15 @@ export default class HeaderOrg extends Vue {
   }
 
   public addQueryParams(param: string) {
+    this.searchPlace(param);
     this.$router.push(`/?city=${param}`);
     this.inputCity = "";
+  }
+
+  public searchPlace(cityCode: string) {
+    this.$store.dispatch("search", {
+      cityCode,
+    });
   }
 }
 </script>

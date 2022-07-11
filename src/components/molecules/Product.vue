@@ -4,8 +4,8 @@
     <template v-if="!loadingFetchData">
       <ImageLibrary
         class="h-full"
-        :main-image="data.mainImage"
-        :sub-images="data.subImages"
+        :main-image="$props.outlet?.property?.heroImage?.url"
+        :sub-images="images"
       />
     </template>
     <template v-else>
@@ -19,22 +19,23 @@
       <div class="flex-1">
         <div class="md:flex items-center md:space-x-2 text-left md:pt-4">
           <div class="text-black-three text-base font-[700]">
-            {{ data.productName }}
+            {{ $props.outlet?.property?.name }}
           </div>
           <div>
-            <StarRating :rating="data.rating" />
+            <StarRating :rating="$props.outlet?.property?.starRating" />
           </div>
         </div>
         <div class="text-black-three text-xs text-left mt-1">
-          {{ data.address }}
+          {{ setLocation($props.outlet?.property?.location) }}
         </div>
         <div
-          class="md:block hidden mt-[7px] text-placeholder text-left text-xs"
+          v-if="$props.outlet?.property?.reviews?.summary?.text"
+          class="md:block hidden mt-[7px] h-[18px] w-[450px] text-placeholder text-left text-xs truncate"
         >
-          {{ data.description }}
+          {{ $props.outlet?.property?.reviews?.summary?.text }}
         </div>
         <div class="text-left mt-[11px] md:flex hidden">
-          <TicketList :titles="titles" />
+          <TicketList :titles="setTitles($props.outlet?.packages) || []" />
         </div>
         <div class="md:flex hidden py-[15px]">
           <img
@@ -42,7 +43,9 @@
             src="@/assets/images/Shield.svg"
             alt=""
           />
-          <div class="text-base text-black-thress">Singapore - SG Clean</div>
+          <div class="text-base text-black-thress">
+            {{ $props.outlet?.property?.reviews?.covidSafety || "-" }}
+          </div>
         </div>
       </div>
       <!-- Price Section -->
@@ -82,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import TicketView from "@/components/atoms/Ticket.vue";
 import SkeletonLoading from "@/components/atoms/SkeletonLoading.vue";
 import ImageLibrary from "@/components/atoms/ImageLibrary.vue";
@@ -105,16 +108,11 @@ import TicketList from "@/components/atoms/Tickets.vue";
   },
 })
 export default class Product extends Vue {
+  @Prop() public outlet!: object;
+  @Prop() public index!: number;
   public titles: Array<string>;
-  public data: {
-    mainImage?: string;
-    subImages?: Array<string>;
-    rating?: number;
-    productName?: string;
-    address?: string;
-    description?: string;
-  };
   public loadingFetchData: boolean;
+  public images: Array<string | undefined>;
 
   constructor() {
     super();
@@ -125,33 +123,138 @@ export default class Product extends Vue {
       "Pay at hotel",
     ];
 
-    this.data = {};
     this.loadingFetchData = false;
+    this.images = [];
   }
   mounted() {
     this.fetchImages();
   }
+  @Watch("$store.state.outlets")
+  getImages(newVal: any) {
+    if (newVal) {
+      this.fetchImages();
+    }
+  }
 
   public fetchImages() {
     this.loadingFetchData = true;
-    setTimeout(() => {
-      this.data = {
-        mainImage: require("@/assets/images/CardImage1.png"),
-        subImages: [
-          require("@/assets/images/CardImage2.png"),
-          require("@/assets/images/CardImage3.png"),
-          require("@/assets/images/CardImage4.png"),
-          require("@/assets/images/CardImage5.png"),
-        ],
-        rating: 5,
-        productName: "The Fullerton Bay Hotel",
-        address:
-          "80 Collyer quay, Marina Bay, Singapore, Singapore, 049326 (view map)",
-        description:
-          "“Excellent boutique hotel. Great rooms in excellent location. Awesome vibe. Beautiful beac...",
-      };
+    if (
+      this.$store.state.outlets.availability.results[this.$props.index].property
+        .gallery
+    ) {
+      const gallery =
+        this.$store.state.outlets.availability.results[this.$props.index]
+          .property.gallery;
+      const images: Array<string | undefined> = [];
+
+      gallery.forEach(
+        (image: {
+          xs?: { url: string };
+          s?: { url: string };
+          m?: { url: string };
+          l?: { url: string };
+          xl?: { url: string };
+        }) => {
+          switch (true) {
+            case Object.keys(image).includes("xs"):
+              images.push(image?.xs?.url);
+              break;
+            case Object.keys(image).includes("s"):
+              images.push(image?.s?.url);
+              break;
+            case Object.keys(image).includes("m"):
+              images.push(image?.m?.url);
+              break;
+            case Object.keys(image).includes("l"):
+              images.push(image?.l?.url);
+              break;
+            case Object.keys(image).includes("xl"):
+              images.push(image?.xl?.url);
+              break;
+          }
+        }
+      );
+      this.images = images;
       this.loadingFetchData = false;
-    }, 2000);
+    }
+  }
+
+  public setLocation(location: {
+    address: string;
+    city: string;
+    country: string;
+    postalCode: string;
+  }) {
+    let address = "";
+
+    if (location.address) {
+      address += location.address;
+    }
+    if (location.city) {
+      address += ", " + location.address;
+    }
+    if (location.country) {
+      address += ", " + location.country;
+    }
+    if (location.postalCode) {
+      address += ", " + location.postalCode;
+    }
+
+    return address;
+  }
+
+  public setTitles(
+    packages: {
+      foodCode: number;
+      nonRefundable: boolean;
+      payLater: boolean;
+      payAtHotel: boolean;
+    }[]
+  ) {
+    const titles: Array<string> = [];
+    packages.forEach(
+      (pack: {
+        foodCode: number;
+        nonRefundable: boolean;
+        payLater: boolean;
+        payAtHotel: boolean;
+      }) => {
+        if (pack.foodCode) {
+          switch (pack.foodCode) {
+            case 1:
+              titles.push("Room only");
+              break;
+            case 2:
+              titles.push("Breakfast");
+              break;
+            case 3:
+              titles.push("Lunch");
+              break;
+            case 4:
+              titles.push("Dinner");
+              break;
+            case 5:
+              titles.push("Half board");
+              break;
+            case 6:
+              titles.push("Full board");
+              break;
+            case 7:
+              titles.push("All inclusive");
+          }
+        }
+        if (pack.nonRefundable) {
+          titles.push("Free Cancellation");
+        }
+        if (pack.payLater) {
+          titles.push("Pay later");
+        }
+        if (pack.payAtHotel) {
+          titles.push("Pay at hotel");
+        }
+      }
+    );
+    return titles;
   }
 }
 </script>

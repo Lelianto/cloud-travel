@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="text-base text-black font-[700] text-left mb-3">
+    <div
+      v-if="productUi === 'HAS_RESULTS'"
+      class="text-base text-black font-[700] text-left mb-3"
+    >
       Singapore: 9999 properties found
     </div>
     <div class="w-full lg:grid hidden grid-cols-4 mb-[15px]">
@@ -57,36 +60,56 @@
         Discount
       </div>
     </div>
-    <div v-if="productUi === 'HAS_RESULTS'" class="w-full">
+    <div
+      v-if="
+        productUi === 'HAS_RESULTS' &&
+        $store.state.outlets?.availability?.results
+      "
+      class="w-full"
+    >
       <div
-        v-for="(item, index) in [...Array(3)]"
-        :key="`product-${item}-${index}`"
-        :class="`${item !== 0 ? 'mt-[10px]' : ''}`"
+        v-for="(outlet, index) in $store.state.outlets.availability.results"
+        :key="`product-${outlet}-${index}`"
+        :class="`${index !== 0 ? 'mt-[10px]' : ''}`"
       >
-        <Product />
+        <Product :outlet="outlet" :index="index" />
       </div>
     </div>
-    <div v-if="productUi === 'NO_RESULT'">NO_RESULT</div>
-    <div v-if="productUi === 'SEARCH_ERROR'">SEARCH_ERROR</div>
+    <div
+      v-for="(handle, index) in ['NO_RESULT', 'SEARCH_ERROR']"
+      :key="`${handle}-${index}`"
+    >
+      <div v-if="productUi === `${handle}`" class="mt-16">
+        <CustomHandling
+          :image="customErrorHandling[`${handle}`].image"
+          :text="customErrorHandling[`${handle}`].text"
+          :description="customErrorHandling[`${handle}`].description"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import Product from "@/components/molecules/Product.vue";
+import CustomHandling from "@/components/atoms/CustomHandling.vue";
 
 @Component({
   components: {
     Product,
+    CustomHandling,
   },
 })
 export default class SearchResultOrg extends Vue {
-  @Prop() public route?: string;
   public choosenMenu: number;
   public sortByPrice: { choosen: string; notChoosen: string };
   public showOption: boolean;
   public productUi: "HAS_RESULTS" | "NO_RESULT" | "SEARCH_ERROR";
-
+  public customErrorHandling: {
+    NO_RESULT: { image: string; text: string; description?: string };
+    SEARCH_ERROR: { image: string; text: string; description?: string };
+  };
   constructor() {
     super();
     this.choosenMenu = 1;
@@ -96,6 +119,17 @@ export default class SearchResultOrg extends Vue {
     };
     this.showOption = false;
     this.productUi = "HAS_RESULTS";
+    this.customErrorHandling = {
+      NO_RESULT: {
+        image: require("@/assets/images/Search.svg"),
+        text: "Sorry! We couldn't find any properties for your search.",
+      },
+      SEARCH_ERROR: {
+        image: require("@/assets/images/Warning.svg"),
+        text: "Opps, something went wrong.",
+        description: "error message here",
+      },
+    };
   }
 
   @Watch("$route")
@@ -111,12 +145,15 @@ export default class SearchResultOrg extends Vue {
     switch (route) {
       case "klmy":
         this.productUi = "NO_RESULT";
+        this.$store.commit("setSearchResults", "NO_RESULT");
         break;
       case "mlph":
         this.productUi = "SEARCH_ERROR";
+        this.$store.commit("setSearchResults", "SEARCH_ERROR");
         break;
       default:
         this.productUi = "HAS_RESULTS";
+        this.$store.commit("setSearchResults", "HAS_RESULTS");
     }
   }
 

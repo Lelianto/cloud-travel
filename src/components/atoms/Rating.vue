@@ -1,12 +1,12 @@
 <template functional>
   <div class="flex">
-    <img
-      v-for="(rate, index) in [...Array(props.rating)]"
-      :key="`rate-${rate}-${index}`"
-      :class="props.sizeStyle"
-      src="@/assets/images/Star.svg"
-      alt=""
-    />
+    <el-rate
+      v-model="props.rating"
+      class="custom-rate"
+      disabled
+      text-color="#ff9900"
+    >
+    </el-rate>
   </div>
 </template>
 
@@ -25,3 +25,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.custom-rate {
+  .el-rate__icon {
+    margin: 0 !important;
+  }
+}
+</style>
